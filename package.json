@@ -1,0 +1,44 @@
+{
+  "name": "opencode-model-router",
+  "version": "0.1.0",
+  "description": "Quota-aware, per-agent model failover for OpenCode with an OpenChamber control panel",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": ["src", "panel", "README.md", "LICENSE"],
+  "scripts": {
+    "test": "node --test",
+    "build:panel": "esbuild panel/source.js --bundle --format=iife --platform=browser --target=es2022 --outfile=panel/main.js",
+    "check": "npm run test && npm run build:panel"
+  },
+  "engines": { "node": ">=20" },
+  "keywords": ["opencode", "openchamber", "model-fallback", "rate-limit", "quota"],
+  "license": "MIT",
+  "dependencies": {
+    "@opencode/plugin": "^2.2.5"
+  },
+  "devDependencies": {
+    "@openchamber/sdk": "^2.6.1",
+    "esbuild": "^0.25.0"
+  },
+  "openchamber": {
+    "apiVersion": 1,
+    "engines": { "openchamber": ">=1.24.0" },
+    "contributes": {
+      "panel": {
+        "id": "model-router",
+        "name": "Model Router",
+        "icon": "route",
+        "entry": "panel/index.html"
+      },
+      "capabilities": ["filesystem"],
+      "filesystem": [
+        "~/.config/opencode/model-router.json",
+        "~/.config/opencode/model-router-catalog.json",
+        "~/.config/opencode/model-router-status.json"
+      ]
+    }
+  }
+}
